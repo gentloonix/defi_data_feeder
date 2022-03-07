@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/signal"
 	"runtime"
-	"sync/atomic"
 	"syscall"
 	"time"
 
@@ -59,7 +58,8 @@ func blockHeightDaemon() {
 				case err := <-sub.Err():
 					panic(err)
 				case header := <-headers:
-					atomic.StoreUint64(&BlockHeight, header.Number.Uint64())
+					BlockHeight = header.Number.Uint64()
+					log.Println(BlockHeight)
 				}
 			}
 		}()
