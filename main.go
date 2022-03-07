@@ -16,15 +16,13 @@ import (
 )
 
 type Pair struct {
-	BlockTimestampLast *big.Int
-	Reserve0           *big.Int
-	Reserve1           *big.Int
-	KLast              *big.Int
-	Extras             *PairExtras
+	Reserve0 *big.Int
+	Reserve1 *big.Int
+	KLast    *big.Int
+	Extras   *PairExtras
 }
 
 type PairExtras struct {
-	Pair   common.Address
 	Token0 common.Address
 	Token1 common.Address
 }
