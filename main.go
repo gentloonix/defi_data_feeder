@@ -27,14 +27,12 @@ type noCopy struct{}
 func (*noCopy) Lock()   {}
 func (*noCopy) UnLock() {}
 
-//
 const (
 	CHAIN_ID  = 0xa86a
 	RPC_HTTPS = "https://api.avax.network/ext/bc/C/rpc"
 	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
 )
 
-//
 const (
 	JOE = iota
 	PANGOLIN
@@ -60,12 +58,10 @@ type PairStatic struct {
 	Token1 common.Address
 }
 
-//
 var (
 	BlockHeight uint64
 )
 
-//
 func blockHeightDaemon() {
 	runtime.LockOSThread()
 
@@ -103,7 +99,7 @@ func blockHeightDaemon() {
 			}
 		}()
 
-		time.Sleep(10 * time.Second)
+		time.Sleep(time.Minute)
 	}
 }
 
