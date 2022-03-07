@@ -51,7 +51,7 @@ func blockHeightDaemon() {
 			}
 			defer client.Close()
 
-			headers := make(chan *types.Header, 64)
+			headers := make(chan *types.Header, 8)
 			defer close(headers)
 
 			sub, err := client.SubscribeNewHead(context.Background(), headers)
