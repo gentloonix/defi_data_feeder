@@ -15,6 +15,19 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
+const (
+	CHAIN_ID  = 0xa86a
+	RPC_HTTPS = "https://api.avax.network/ext/bc/C/rpc"
+	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
+)
+
+/* TypeID */
+const (
+	JOEPAIR       = iota
+	PANGOLINPAIR  = iota
+	UNISWAPV2PAIR = iota
+)
+
 type Pair struct {
 	Reserve0 *big.Int
 	Reserve1 *big.Int
@@ -22,15 +35,13 @@ type Pair struct {
 }
 
 type PairExtras struct {
-	Token0 common.Address
-	Token1 common.Address
+	ID      int
+	ChainID int
+	TypeID  int
+	Pair    common.Address
+	Token0  common.Address
+	Token1  common.Address
 }
-
-const (
-	CHAIN_ID  = 0xa86a
-	RPC_HTTPS = "https://api.avax.network/ext/bc/C/rpc"
-	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
-)
 
 var (
 	BlockHeight uint64
