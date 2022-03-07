@@ -3,21 +3,30 @@ package main
 import (
 	"context"
 	"log"
+	"math/big"
 	"os"
 	"os/signal"
 	"runtime"
 	"syscall"
 	"time"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
 type Pair struct {
-	Extras *PairExtras
+	BlockTimestampLast *big.Int
+	Reserve0           *big.Int
+	Reserve1           *big.Int
+	KLast              *big.Int
+	Extras             *PairExtras
 }
 
 type PairExtras struct {
+	Pair   common.Address
+	Token0 common.Address
+	Token1 common.Address
 }
 
 const (
