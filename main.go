@@ -19,7 +19,6 @@ type Pair struct {
 	Reserve0 *big.Int
 	Reserve1 *big.Int
 	KLast    *big.Int
-	Extras   *PairExtras
 }
 
 type PairExtras struct {
