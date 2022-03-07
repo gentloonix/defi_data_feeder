@@ -15,7 +15,7 @@ import (
 	"golang.org/x/sys/cpu"
 )
 
-// ### WEB3
+// ### Web 3
 
 const (
 	CHAIN_ID  = 0xa86a
@@ -74,7 +74,9 @@ func blockHeightDaemon() {
 	}
 }
 
-// ### MAIN
+// ### Pair
+
+// ### Main
 
 func main() {
 	go blockHeightDaemon()
