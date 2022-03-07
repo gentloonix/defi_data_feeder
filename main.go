@@ -33,6 +33,7 @@ const (
 	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
 )
 
+// TypeID
 const (
 	JOE = iota
 	PANGOLIN
@@ -46,14 +47,16 @@ type Pair struct {
 	Reserve0 *big.Int
 	Reserve1 *big.Int
 	KLast    *big.Int
+	C        chan struct{}
 	Static   *PairStatic
 }
 type PairStatic struct {
 	//lint:ignore U1000 noCopy
 	noCopy noCopy
 
+	ID     int
+	TypeID int
 	Pair   common.Address
-	Type   int
 	Token0 common.Address
 	Token1 common.Address
 }
