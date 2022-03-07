@@ -12,7 +12,6 @@ import (
 
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"golang.org/x/sys/cpu"
 )
 
 // ### Web 3
@@ -26,13 +25,8 @@ const (
 // ### Block Height
 
 var (
-	BlockHeight PBlockHeight
+	BlockHeight uint64
 )
-
-type PBlockHeight struct {
-	N uint64
-	_ cpu.CacheLinePad
-}
 
 func blockHeightDaemon() {
 	runtime.LockOSThread()
@@ -65,7 +59,7 @@ func blockHeightDaemon() {
 				case err := <-sub.Err():
 					panic(err)
 				case header := <-headers:
-					atomic.StoreUint64(&BlockHeight.N, header.Number.Uint64())
+					atomic.StoreUint64(&BlockHeight, header.Number.Uint64())
 				}
 			}
 		}()
@@ -75,6 +69,13 @@ func blockHeightDaemon() {
 }
 
 // ### Pair
+
+type Pair struct {
+	Pe *PairExtras
+}
+
+type PairExtras struct {
+}
 
 // ### Main
 
