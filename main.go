@@ -47,7 +47,7 @@ func blockHeightDaemon() {
 
 			client, err := ethclient.Dial(RPC_WSS)
 			if err != nil {
-				log.Panicln(err)
+				panic(err)
 			}
 			defer client.Close()
 
@@ -56,14 +56,14 @@ func blockHeightDaemon() {
 
 			sub, err := client.SubscribeNewHead(context.Background(), headers)
 			if err != nil {
-				log.Panicln(err)
+				panic(err)
 			}
 			defer sub.Unsubscribe()
 
 			for {
 				select {
 				case err := <-sub.Err():
-					log.Panicln(err)
+					panic(err)
 				case header := <-headers:
 					atomic.StoreUint64(&BlockHeight.N, header.Number.Uint64())
 					log.Println(atomic.LoadUint64(&BlockHeight.N))
