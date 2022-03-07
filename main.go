@@ -26,10 +26,10 @@ const (
 // ### Block Height
 
 var (
-	BlockHeight BlockHeightPadded
+	BlockHeight WBlockHeight
 )
 
-type BlockHeightPadded struct {
+type WBlockHeight struct {
 	N uint64
 	_ cpu.CacheLinePad
 }
@@ -44,8 +44,6 @@ func blockHeightDaemon() {
 					log.Println(err)
 				}
 			}()
-
-			var err error
 
 			client, err := ethclient.Dial(RPC_WSS)
 			if err != nil {
