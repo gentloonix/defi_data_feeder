@@ -3,8 +3,11 @@ package main
 import (
 	"context"
 	"log"
+	"os"
+	"os/signal"
 	"runtime"
 	"sync/atomic"
+	"syscall"
 	"time"
 
 	"github.com/ethereum/go-ethereum/core/types"
@@ -32,6 +35,7 @@ type BlockHeightPadded struct {
 }
 
 func blockHeightDaemon() {
+	runtime.LockOSThread()
 	for {
 		func() {
 			defer func() {
@@ -70,7 +74,6 @@ func blockHeightDaemon() {
 				}
 			}
 		}()
-
 		time.Sleep(10 * time.Second)
 	}
 }
@@ -78,7 +81,9 @@ func blockHeightDaemon() {
 // ### MAIN
 
 func main() {
-	runtime.LockOSThread()
+	go blockHeightDaemon()
 
-	blockHeightDaemon()
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	<-c
 }
