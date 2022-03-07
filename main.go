@@ -22,14 +22,14 @@ const (
 
 // ### Block Height
 
+var (
+	BlockHeight BlockHeightPadded
+)
+
 type BlockHeightPadded struct {
 	N uint64
 	_ cpu.CacheLinePad
 }
-
-var (
-	BlockHeight BlockHeightPadded
-)
 
 func blockHeightDaemon() {
 	for {
