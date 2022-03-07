@@ -29,18 +29,23 @@ const (
 )
 
 type Pair struct {
+	ID      int
+	ChainID int
+	TypeID  int
+	Dynamic PairDynamic
+	Static  PairStatic
+}
+
+type PairDynamic struct {
 	Reserve0 *big.Int
 	Reserve1 *big.Int
 	KLast    *big.Int
 }
 
-type PairExtras struct {
-	ID      int
-	ChainID int
-	TypeID  int
-	Pair    common.Address
-	Token0  common.Address
-	Token1  common.Address
+type PairStatic struct {
+	Pair   common.Address
+	Token0 common.Address
+	Token1 common.Address
 }
 
 var (
