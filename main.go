@@ -13,15 +13,18 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-// ### Web 3
+type Pair struct {
+	Extras *PairExtras
+}
+
+type PairExtras struct {
+}
 
 const (
 	CHAIN_ID  = 0xa86a
 	RPC_HTTPS = "https://api.avax.network/ext/bc/C/rpc"
 	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
 )
-
-// ### Block Height
 
 var (
 	BlockHeight uint64
@@ -67,17 +70,6 @@ func blockHeightDaemon() {
 		time.Sleep(10 * time.Second)
 	}
 }
-
-// ### Pair
-
-type Pair struct {
-	Pe *PairExtras
-}
-
-type PairExtras struct {
-}
-
-// ### Main
 
 func main() {
 	go blockHeightDaemon()
