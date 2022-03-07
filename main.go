@@ -21,17 +21,18 @@ const (
 	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
 )
 
-/* TypeID */
+/* Type */
 const (
-	JOEPAIR       = iota
-	PANGOLINPAIR  = iota
-	UNISWAPV2PAIR = iota
+	JOE_PAIR        = iota
+	PANGOLIN_PAIR   = iota
+	UNISWAP_V2_PAIR = iota
 )
 
 type Pair struct {
 	ID      int
 	ChainID int
-	TypeID  int
+	Type    int
+	Pair    common.Address
 	Dynamic PairDynamic
 	Static  PairStatic
 }
@@ -43,7 +44,6 @@ type PairDynamic struct {
 }
 
 type PairStatic struct {
-	Pair   common.Address
 	Token0 common.Address
 	Token1 common.Address
 }
