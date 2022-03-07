@@ -26,10 +26,10 @@ const (
 // ### Block Height
 
 var (
-	BlockHeight WBlockHeight
+	BlockHeight PBlockHeight
 )
 
-type WBlockHeight struct {
+type PBlockHeight struct {
 	N uint64
 	_ cpu.CacheLinePad
 }
@@ -66,7 +66,6 @@ func blockHeightDaemon() {
 					panic(err)
 				case header := <-headers:
 					atomic.StoreUint64(&BlockHeight.N, header.Number.Uint64())
-					log.Println(atomic.LoadUint64(&BlockHeight.N))
 				}
 			}
 		}()
