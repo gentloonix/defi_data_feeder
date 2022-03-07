@@ -21,7 +21,7 @@ const (
 	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
 )
 
-/* Type */
+/* Pair Type */
 const (
 	JOE_PAIR        = iota
 	PANGOLIN_PAIR   = iota
@@ -36,13 +36,11 @@ type Pair struct {
 	Dynamic PairDynamic
 	Static  PairStatic
 }
-
 type PairDynamic struct {
 	Reserve0 *big.Int
 	Reserve1 *big.Int
 	KLast    *big.Int
 }
-
 type PairStatic struct {
 	Token0 common.Address
 	Token1 common.Address
