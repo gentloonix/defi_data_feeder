@@ -36,6 +36,7 @@ type BlockHeightPadded struct {
 
 func blockHeightDaemon() {
 	runtime.LockOSThread()
+
 	for {
 		func() {
 			defer func() {
@@ -44,35 +45,34 @@ func blockHeightDaemon() {
 				}
 			}()
 
-			client, _ := ethclient.Dial(RPC_WSS)
-			if client == nil {
-				log.Println("client is nil")
-				return
+			var err error
+
+			client, err := ethclient.Dial(RPC_WSS)
+			if err != nil {
+				log.Panicln(err)
 			}
 			defer client.Close()
 
-			headers := make(chan *types.Header, 128)
+			headers := make(chan *types.Header, 64)
 			defer close(headers)
 
 			sub, err := client.SubscribeNewHead(context.Background(), headers)
 			if err != nil {
-				log.Println(err)
-				return
+				log.Panicln(err)
 			}
 			defer sub.Unsubscribe()
 
 			for {
 				select {
 				case err := <-sub.Err():
-					log.Println(err)
-					return
+					log.Panicln(err)
 				case header := <-headers:
 					atomic.StoreUint64(&BlockHeight.N, header.Number.Uint64())
-					// TODO Debug
-					log.Println(BlockHeight.N)
+					log.Println(atomic.LoadUint64(&BlockHeight.N))
 				}
 			}
 		}()
+
 		time.Sleep(10 * time.Second)
 	}
 }
