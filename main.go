@@ -15,8 +15,7 @@ import (
 // ### WEB3
 
 const (
-	CHAIN_ID = 0xa86a
-
+	CHAIN_ID  = 0xa86a
 	RPC_HTTPS = "https://api.avax.network/ext/bc/C/rpc"
 	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
 )
