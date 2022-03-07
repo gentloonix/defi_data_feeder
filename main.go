@@ -15,36 +15,57 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
+// noCopy may be embedded into structs which must not be copied
+// after the first use.
+//
+// See https://golang.org/issues/8005#issuecomment-190753527
+// for details.
+//lint:ignore U1000 noCopy
+type noCopy struct{}
+
+// Lock is a no-op used by -copylocks checker from `go vet`.
+func (*noCopy) Lock()   {}
+func (*noCopy) UnLock() {}
+
+//
 const (
 	CHAIN_ID  = 0xa86a
 	RPC_HTTPS = "https://api.avax.network/ext/bc/C/rpc"
 	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
 )
 
+//
 const (
-	JOE        = "joe"
-	PANGOLIN   = "pangolin"
-	UNISWAP_V2 = "uniswap-v2"
+	JOE = iota
+	PANGOLIN
+	UNISWAP_V2
 )
 
 type Pair struct {
+	//lint:ignore U1000 noCopy
+	noCopy noCopy
+
 	Reserve0 *big.Int
 	Reserve1 *big.Int
 	KLast    *big.Int
 	Static   *PairStatic
 }
 type PairStatic struct {
-	Pair    common.Address
-	DEX     string
-	ChainID int
-	Token0  common.Address
-	Token1  common.Address
+	//lint:ignore U1000 noCopy
+	noCopy noCopy
+
+	Pair   common.Address
+	Type   int
+	Token0 common.Address
+	Token1 common.Address
 }
 
+//
 var (
 	BlockHeight uint64
 )
 
+//
 func blockHeightDaemon() {
 	runtime.LockOSThread()
 
