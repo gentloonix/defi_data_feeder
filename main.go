@@ -23,9 +23,9 @@ const (
 
 /* Pair Type */
 const (
-	JOE_PAIR        = iota
-	PANGOLIN_PAIR   = iota
-	UNISWAP_V2_PAIR = iota
+	JOE_PAIR        = "joe"
+	PANGOLIN_PAIR   = "pangolin"
+	UNISWAP_V2_PAIR = "uniswap-v2"
 )
 
 type Pair struct {
@@ -40,7 +40,7 @@ type PairDynamic struct {
 }
 type PairStatic struct {
 	ChainID int
-	Type    int
+	Type    string
 	Pair    common.Address
 	Token0  common.Address
 	Token1  common.Address
