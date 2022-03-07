@@ -53,7 +53,7 @@ func blockHeightDaemon() {
 			}
 			defer client.Close()
 
-			headers := make(chan *types.Header, 8)
+			headers := make(chan *types.Header, 16)
 			defer close(headers)
 
 			sub, err := client.SubscribeNewHead(context.Background(), headers)
@@ -68,7 +68,7 @@ func blockHeightDaemon() {
 					panic(err)
 				case header := <-headers:
 					BlockHeight = header.Number.Uint64()
-					log.Println(BlockHeight)
+					log.Println(BlockHeight, time.Now().Unix(), header.Time)
 				}
 			}
 		}()
