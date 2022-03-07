@@ -30,9 +30,6 @@ const (
 
 type Pair struct {
 	ID      int
-	ChainID int
-	Type    int
-	Pair    common.Address
 	Dynamic PairDynamic
 	Static  PairStatic
 }
@@ -42,8 +39,11 @@ type PairDynamic struct {
 	KLast    *big.Int
 }
 type PairStatic struct {
-	Token0 common.Address
-	Token1 common.Address
+	ChainID int
+	Type    int
+	Pair    common.Address
+	Token0  common.Address
+	Token1  common.Address
 }
 
 var (
