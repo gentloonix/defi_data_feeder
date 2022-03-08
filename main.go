@@ -57,11 +57,11 @@ func blockHeightDaemon() {
 			if err != nil {
 				panic(err)
 			}
-			exp := time.Now().Unix() + TIMEOUT_SECONDS
 			defer func() {
 				go sub.Unsubscribe()
 			}()
 
+			exp := time.Now().Unix() + TIMEOUT_SECONDS
 			for {
 				select {
 				case err := <-sub.Err():
