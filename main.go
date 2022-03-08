@@ -24,8 +24,8 @@ func (*noCopy) UnLock() {}
 
 // --- --- ---
 const (
-	RPC_WSS         = "wss://api.avax.network/ext/bc/C/ws"
 	RPC_HTTPS       = "https://api.avax.network/ext/bc/C/rpc"
+	RPC_WSS         = "wss://api.avax.network/ext/bc/C/ws"
 	TIMEOUT_SECONDS = 10
 )
 
