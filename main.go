@@ -122,6 +122,7 @@ func (p *Pair) Daemon() {
 					panic(err)
 				}
 				if p.Reserve0.CmpAbs(reserves.Reserve0) != 0 || p.Reserve1.CmpAbs(reserves.Reserve1) != 0 {
+					// TODO Announce reserves.Reserve0 reserves.Reserve1
 					p.Reserve0 = reserves.Reserve0
 					p.Reserve1 = reserves.Reserve1
 				}
