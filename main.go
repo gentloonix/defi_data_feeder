@@ -71,7 +71,7 @@ func blockHeightDaemon() {
 					exp = time.Now().Unix() + TIMEOUT_SECONDS
 				default:
 					if time.Now().Unix() > exp {
-						panic("i/o timeout")
+						panic("block header timeout")
 					}
 				}
 			}
