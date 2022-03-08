@@ -43,21 +43,21 @@ type Pair struct {
 	//lint:ignore U1000 noCopy
 	noCopy noCopy
 
-	C        chan struct{}
 	Reserve0 *big.Int
 	Reserve1 *big.Int
 	KLast    *big.Int
+	ID       int
 	Static   *PairStatic
 }
 type PairStatic struct {
 	//lint:ignore U1000 noCopy
 	noCopy noCopy
 
-	ID     int
-	Type   string
+	C      chan struct{}
 	Pair   common.Address
 	Token0 common.Address
 	Token1 common.Address
+	Type   string
 }
 
 var (
