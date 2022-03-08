@@ -95,7 +95,7 @@ func blockHeightDaemonWatchdog() {
 				if time.Now().Unix() > BlockHeightExp {
 					BlockHeightExpC <- struct{}{}
 				}
-				time.Sleep(time.Second)
+				time.Sleep(100 * time.Millisecond)
 			}
 		}()
 	}
