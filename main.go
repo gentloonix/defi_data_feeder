@@ -117,7 +117,7 @@ func (p *Pair) Daemon() {
 			}
 			defer client.Close()
 
-			instance, err := PairReader.NewPairReader(p.Static.Pair, client)
+			instance, err := PairReader.NewPairReaderCaller(p.Static.Pair, client)
 			if err != nil {
 				panic(err)
 			}
