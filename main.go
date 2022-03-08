@@ -79,16 +79,8 @@ type Pair struct {
 	//lint:ignore U1000 noCopy
 	noCopy noCopy
 
-	Reserve0 *big.Int
-	Reserve1 *big.Int
-	ID       int
-	Static   *PairStatic
-}
-type PairStatic struct {
-	//lint:ignore U1000 noCopy
-	noCopy noCopy
-
 	C      chan struct{}
+	ID     int
 	Pair   common.Address
 	Token0 common.Address
 	Token1 common.Address
@@ -109,22 +101,23 @@ func (p *Pair) Daemon() {
 			}
 			defer client.Close()
 
-			instance, err := PairReader.NewPairReaderCaller(p.Static.Pair, client)
+			instance, err := PairReader.NewPairReaderCaller(p.Pair, client)
 			if err != nil {
 				panic(err)
 			}
 
-			c := p.Static.C
+			c := p.C
+			reserve0 := big.NewInt(0)
+			reserve1 := big.NewInt(0)
 			for {
 				<-c
 				reserves, err := instance.GetReserves(nil)
 				if err != nil {
 					panic(err)
 				}
-				if p.Reserve0.CmpAbs(reserves.Reserve0) != 0 || p.Reserve1.CmpAbs(reserves.Reserve1) != 0 {
-					// TODO Announce reserves.Reserve0 reserves.Reserve1
-					p.Reserve0 = reserves.Reserve0
-					p.Reserve1 = reserves.Reserve1
+				if reserve0.CmpAbs(reserves.Reserve0) != 0 || reserve1.CmpAbs(reserves.Reserve1) != 0 {
+					reserve0 = reserves.Reserve0
+					reserve1 = reserves.Reserve1
 				}
 			}
 		}()
