@@ -71,11 +71,12 @@ func blockHeightDaemon() {
 					exp = time.Now().Unix() + TIMEOUT_SECONDS
 				default:
 					if time.Now().Unix() > exp {
-						panic("block header timeout")
+						panic("header timeout")
 					}
 				}
 			}
 		}()
+		log.Println("blockHeightDaemon:", "cooldown")
 		time.Sleep(10 * time.Second)
 	}
 }
