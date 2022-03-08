@@ -59,17 +59,23 @@ func blockHeightDaemon() {
 			}
 			defer sub.Unsubscribe()
 
+			timeout := time.Now().Unix()
 			for {
 				select {
 				case err := <-sub.Err():
 					panic(err)
 				case header := <-headers:
 					BlockHeight = header.Number.Uint64()
+					timeout = time.Now().Unix() + 15
+				default:
+					if time.Now().Unix() < timeout {
+						panic("timeout")
+					}
 				}
 			}
 		}()
 
-		time.Sleep(time.Minute)
+		time.Sleep(15 * time.Second)
 	}
 }
 
