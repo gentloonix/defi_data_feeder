@@ -31,7 +31,9 @@ const (
 
 // --- --- ---
 var (
-	BlockHeight uint64
+	BlockHeight     uint64
+	BlockHeightExp  int64
+	BlockHeightExpC chan struct{}
 )
 
 func blockHeightDaemon() {
@@ -41,6 +43,7 @@ func blockHeightDaemon() {
 			defer func() {
 				if err := recover(); err != nil {
 					log.Println("blockHeightDaemon:", err)
+					BlockHeightExp = time.Now().Unix() + TIMEOUT_SECONDS
 				}
 			}()
 
@@ -61,23 +64,40 @@ func blockHeightDaemon() {
 				go sub.Unsubscribe()
 			}()
 
-			exp := time.Now().Unix() + TIMEOUT_SECONDS
 			for {
 				select {
+				case <-BlockHeightExpC:
+					panic("header timeout")
 				case err := <-sub.Err():
 					panic(err)
 				case header := <-headers:
 					BlockHeight = header.Number.Uint64()
-					exp = time.Now().Unix() + TIMEOUT_SECONDS
-				default:
-					if time.Now().Unix() > exp {
-						panic("header timeout")
-					}
+					BlockHeightExp = time.Now().Unix() + TIMEOUT_SECONDS
+					log.Println(BlockHeight)
 				}
 			}
 		}()
 		log.Println("blockHeightDaemon:", "cooldown")
 		time.Sleep(3 * time.Second)
+	}
+}
+
+func blockHeightDaemonWatchdog() {
+	for {
+		func() {
+			defer func() {
+				if err := recover(); err != nil {
+					log.Println("blockHeightDaemon:", err)
+				}
+			}()
+
+			for {
+				if time.Now().Unix() > BlockHeightExp {
+					BlockHeightExpC <- struct{}{}
+				}
+				time.Sleep(time.Second)
+			}
+		}()
 	}
 }
 
@@ -134,7 +154,10 @@ func (p *Pair) Daemon() {
 
 // --- --- ---
 func main() {
+	BlockHeightExp = time.Now().Unix() + TIMEOUT_SECONDS
+	BlockHeightExpC = make(chan struct{})
 	go blockHeightDaemon()
+	go blockHeightDaemonWatchdog()
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
