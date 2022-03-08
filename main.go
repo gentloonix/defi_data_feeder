@@ -36,7 +36,6 @@ var (
 
 func blockHeightDaemon() {
 	runtime.LockOSThread()
-
 	for {
 		func() {
 			defer func() {
@@ -58,13 +57,9 @@ func blockHeightDaemon() {
 			if err != nil {
 				panic(err)
 			}
-
 			exp := time.Now().Unix() + TIMEOUT_SECONDS
-
 			defer func() {
-				if !(time.Now().Unix() > exp) {
-					sub.Unsubscribe()
-				}
+				go sub.Unsubscribe()
 			}()
 
 			for {
