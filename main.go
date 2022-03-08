@@ -26,7 +26,7 @@ func (*noCopy) UnLock() {}
 const (
 	RPC_HTTPS       = "https://api.avax.network/ext/bc/C/rpc"
 	RPC_WSS         = "wss://api.avax.network/ext/bc/C/ws"
-	TIMEOUT_SECONDS = 10
+	TIMEOUT_SECONDS = 30
 )
 
 // --- --- ---
@@ -77,7 +77,7 @@ func blockHeightDaemon() {
 			}
 		}()
 		log.Println("blockHeightDaemon:", "cooldown")
-		time.Sleep(10 * time.Second)
+		time.Sleep(3 * time.Second)
 	}
 }
 
