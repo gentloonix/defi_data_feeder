@@ -79,11 +79,10 @@ type Pair struct {
 	//lint:ignore U1000 noCopy
 	noCopy noCopy
 
-	Reserve0           *big.Int
-	Reserve1           *big.Int
-	BlockTimestampLast uint32
-	ID                 int
-	Static             *PairStatic
+	Reserve0 *big.Int
+	Reserve1 *big.Int
+	ID       int
+	Static   *PairStatic
 }
 type PairStatic struct {
 	//lint:ignore U1000 noCopy
@@ -124,7 +123,6 @@ func (p *Pair) Daemon() {
 				}
 				p.Reserve0 = reserves.Reserve0
 				p.Reserve1 = reserves.Reserve1
-				p.BlockTimestampLast = reserves.BlockTimestampLast
 			}
 		}()
 	}
