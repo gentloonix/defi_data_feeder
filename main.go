@@ -115,7 +115,8 @@ func (p *Pair) Daemon() {
 				if err != nil {
 					panic(err)
 				}
-				if reserve0.CmpAbs(reserves.Reserve0) != 0 || reserve1.CmpAbs(reserves.Reserve1) != 0 {
+				if reserve0.CmpAbs(reserves.Reserve0) != 0 ||
+					reserve1.CmpAbs(reserves.Reserve1) != 0 {
 					reserve0 = reserves.Reserve0
 					reserve1 = reserves.Reserve1
 				}
