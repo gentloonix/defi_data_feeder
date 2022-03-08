@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"log"
-	"main/PairBinder"
+	"main/PairReader"
 	"math/big"
 	"os"
 	"os/signal"
@@ -117,13 +117,12 @@ func (p *Pair) Daemon() {
 			}
 			defer client.Close()
 
-			instance, err := PairBinder.NewPairBinder(p.Static.Pair, client)
+			instance, err := PairReader.NewPairReader(p.Static.Pair, client)
 			if err != nil {
 				panic(err)
 			}
 
 			c := p.Static.C
-
 			for {
 				select {
 				case <-c:
