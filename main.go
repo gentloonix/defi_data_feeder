@@ -81,17 +81,10 @@ func blockHeightDaemon() {
 }
 
 // --- --- ---
-const (
-	JOE        = "joe"
-	PANGOLIN   = "pangolin"
-	UNISWAP_V2 = "uniswap-v2"
-)
-
 type Pair struct {
 	//lint:ignore U1000 noCopy
 	noCopy noCopy
 
-	C        chan struct{}
 	Reserve0 *big.Int
 	Reserve1 *big.Int
 	KLast    *big.Int
@@ -102,10 +95,10 @@ type PairStatic struct {
 	//lint:ignore U1000 noCopy
 	noCopy noCopy
 
+	C      chan struct{}
 	Pair   common.Address
 	Token0 common.Address
 	Token1 common.Address
-	Type   string
 }
 
 func (p *Pair) Daemon() {
