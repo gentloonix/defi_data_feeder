@@ -40,7 +40,7 @@ func blockHeightDaemon() {
 		func() {
 			defer func() {
 				if err := recover(); err != nil {
-					log.Println(err)
+					log.Println("blockHeightDaemon:", err)
 				}
 			}()
 
