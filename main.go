@@ -66,7 +66,6 @@ func blockHeightDaemon() {
 					panic(err)
 				case header := <-headers:
 					BlockHeight = header.Number.Uint64()
-					log.Println(BlockHeight, time.Now().Unix(), header.Time)
 				}
 			}
 		}()
