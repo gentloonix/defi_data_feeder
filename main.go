@@ -16,15 +16,9 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-// noCopy may be embedded into structs which must not be copied
-// after the first use.
-//
-// See https://golang.org/issues/8005#issuecomment-190753527
-// for details.
 //lint:ignore U1000 noCopy
 type noCopy struct{}
 
-// Lock is a no-op used by -copylocks checker from `go vet`.
 func (*noCopy) Lock()   {}
 func (*noCopy) UnLock() {}
 
