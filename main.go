@@ -27,39 +27,14 @@ type noCopy struct{}
 func (*noCopy) Lock()   {}
 func (*noCopy) UnLock() {}
 
+// --- --- ---
 const (
 	CHAIN_ID  = 0xa86a
 	RPC_HTTPS = "https://api.avax.network/ext/bc/C/rpc"
 	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
 )
 
-const (
-	JOE        = "joe"
-	PANGOLIN   = "pangolin"
-	UNISWAP_V2 = "uniswap-v2"
-)
-
-type Pair struct {
-	//lint:ignore U1000 noCopy
-	noCopy noCopy
-
-	Reserve0 *big.Int
-	Reserve1 *big.Int
-	KLast    *big.Int
-	ID       int
-	Static   *PairStatic
-}
-type PairStatic struct {
-	//lint:ignore U1000 noCopy
-	noCopy noCopy
-
-	C      chan struct{}
-	Pair   common.Address
-	Token0 common.Address
-	Token1 common.Address
-	Type   string
-}
-
+// --- --- ---
 var (
 	BlockHeight uint64
 )
@@ -103,6 +78,34 @@ func blockHeightDaemon() {
 
 		time.Sleep(time.Minute)
 	}
+}
+
+// --- --- ---
+const (
+	JOE        = "joe"
+	PANGOLIN   = "pangolin"
+	UNISWAP_V2 = "uniswap-v2"
+)
+
+type Pair struct {
+	//lint:ignore U1000 noCopy
+	noCopy noCopy
+
+	Reserve0 *big.Int
+	Reserve1 *big.Int
+	KLast    *big.Int
+	ID       int
+	Static   *PairStatic
+}
+type PairStatic struct {
+	//lint:ignore U1000 noCopy
+	noCopy noCopy
+
+	C      chan struct{}
+	Pair   common.Address
+	Token0 common.Address
+	Token1 common.Address
+	Type   string
 }
 
 func main() {
