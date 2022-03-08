@@ -24,9 +24,9 @@ func (*noCopy) UnLock() {}
 
 // --- --- ---
 const (
-	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
-	RPC_HTTPS = "https://api.avax.network/ext/bc/C/rpc"
-	TIMEOUT   = 15
+	RPC_WSS         = "wss://api.avax.network/ext/bc/C/ws"
+	RPC_HTTPS       = "https://api.avax.network/ext/bc/C/rpc"
+	TIMEOUT_SECONDS = 10
 )
 
 // --- --- ---
@@ -58,24 +58,31 @@ func blockHeightDaemon() {
 			if err != nil {
 				panic(err)
 			}
-			defer sub.Unsubscribe()
 
-			exp := time.Now().Unix() + TIMEOUT
+			exp := time.Now().Unix() + TIMEOUT_SECONDS
+
+			defer func() {
+				if !(time.Now().Unix() > exp) {
+					sub.Unsubscribe()
+				}
+			}()
+
 			for {
 				select {
 				case err := <-sub.Err():
 					panic(err)
 				case header := <-headers:
 					BlockHeight = header.Number.Uint64()
-					exp = time.Now().Unix() + TIMEOUT
+					exp = time.Now().Unix() + TIMEOUT_SECONDS
 				default:
+					log.Println(exp)
 					if time.Now().Unix() > exp {
 						panic("timeout")
 					}
 				}
 			}
 		}()
-		time.Sleep(15 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }
 
