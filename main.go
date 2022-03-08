@@ -91,6 +91,7 @@ type Pair struct {
 	//lint:ignore U1000 noCopy
 	noCopy noCopy
 
+	C        chan struct{}
 	Reserve0 *big.Int
 	Reserve1 *big.Int
 	KLast    *big.Int
@@ -101,13 +102,38 @@ type PairStatic struct {
 	//lint:ignore U1000 noCopy
 	noCopy noCopy
 
-	C      chan struct{}
 	Pair   common.Address
 	Token0 common.Address
 	Token1 common.Address
 	Type   string
 }
 
+func (p *Pair) Daemon() {
+	for {
+		func() {
+			defer func() {
+				if err := recover(); err != nil {
+					log.Println(err)
+				}
+			}()
+
+			client, err := ethclient.Dial(RPC_HTTPS)
+			if err != nil {
+				panic(err)
+			}
+			defer client.Close()
+
+			for {
+				select {
+				case <-p.C:
+
+				}
+			}
+		}()
+	}
+}
+
+// --- --- ---
 func main() {
 	go blockHeightDaemon()
 
