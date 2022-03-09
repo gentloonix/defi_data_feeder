@@ -108,11 +108,11 @@ type Pair struct {
 	//lint:ignore U1000 noCopy
 	noCopy noCopy
 
-	C      chan struct{}
 	ID     int
 	Pair   common.Address
 	Token0 common.Address
 	Token1 common.Address
+	C      chan struct{}
 }
 
 func (p *Pair) Daemon() {
