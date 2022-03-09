@@ -24,8 +24,9 @@ func (*noCopy) UnLock() {}
 
 // --- --- ---
 const (
-	RPC_HTTPS               = "https://api.avax.network/ext/bc/C/rpc"
-	RPC_WSS                 = "wss://api.avax.network/ext/bc/C/ws"
+	RPC_HTTPS = "https://api.avax.network/ext/bc/C/rpc"
+	RPC_WSS   = "wss://api.avax.network/ext/bc/C/ws"
+
 	RPC_WSS_TIMEOUT_SECONDS = 30
 )
 
@@ -85,20 +86,21 @@ func blockHeightDaemon() {
 	}
 }
 
-func blockHeightDaemonWatchdog() {
+func blockHeightWatchdog() {
 	for {
 		func() {
 			defer func() {
 				if err := recover(); err != nil {
-					log.Println("blockHeightDaemonWatchdog:", err)
+					log.Println("blockHeightWatchdog:", err)
 				}
 			}()
 
 			for {
 				if time.Now().Unix() > blockHeightExp {
 					blockHeightExpC <- struct{}{}
+				} else {
+					time.Sleep(100 * time.Millisecond)
 				}
-				time.Sleep(100 * time.Millisecond)
 			}
 		}()
 	}
@@ -160,7 +162,7 @@ func main() {
 	blockHeightExp = time.Now().Unix() + RPC_WSS_TIMEOUT_SECONDS
 	blockHeightExpC = make(chan struct{})
 	go blockHeightDaemon()
-	go blockHeightDaemonWatchdog()
+	go blockHeightWatchdog()
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
