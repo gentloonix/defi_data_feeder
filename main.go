@@ -33,9 +33,7 @@ const (
 // --- --- ---
 var (
 	BlockHeight uint64
-)
 
-var (
 	blockHeightExp  int64
 	blockHeightExpC chan struct{}
 )
@@ -77,7 +75,6 @@ func blockHeightDaemon() {
 				case header := <-headers:
 					BlockHeight = header.Number.Uint64()
 					blockHeightExp = time.Now().Unix() + RPC_WSS_TIMEOUT_SECONDS
-					log.Println(BlockHeight)
 				}
 			}
 		}()
@@ -99,7 +96,7 @@ func blockHeightWatchdog() {
 				if time.Now().Unix() > blockHeightExp {
 					blockHeightExpC <- struct{}{}
 				} else {
-					time.Sleep(100 * time.Millisecond)
+					time.Sleep(300 * time.Millisecond)
 				}
 			}
 		}()
