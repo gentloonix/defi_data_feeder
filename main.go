@@ -85,12 +85,12 @@ func updateBlockHeightExp() {
 	blockHeightExp = time.Now().Unix() + 15
 }
 
-func blockHeightWatchdog() {
+func blockHeightExpDaemon() {
 	for {
 		func() {
 			defer func() {
 				if err := recover(); err != nil {
-					log.Println("blockHeightWatchdog:", err)
+					log.Println("blockHeightExpDaemon:", err)
 				}
 			}()
 
@@ -109,7 +109,7 @@ func initBlockHeight() {
 	updateBlockHeightExp()
 	blockHeightExpC = make(chan struct{})
 	go blockHeightDaemon()
-	go blockHeightWatchdog()
+	go blockHeightExpDaemon()
 }
 
 // --- --- ---
