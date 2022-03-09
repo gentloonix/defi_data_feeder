@@ -105,7 +105,7 @@ func blockHeightExpDaemon() {
 	}
 }
 
-func initBlockHeightDaemon() {
+func initBlockHeight() {
 	updateBlockHeightExp()
 	blockHeightExpC = make(chan struct{})
 	go blockHeightDaemon()
@@ -165,7 +165,7 @@ func (p *Pair) Daemon() {
 
 // --- --- ---
 func main() {
-	initBlockHeightDaemon()
+	initBlockHeight()
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
