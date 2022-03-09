@@ -32,12 +32,12 @@ const (
 var (
 	BlockHeight uint64
 
-	blockHeightExp  int64
-	blockHeightExpC chan struct{}
+	exp  int64
+	expC chan struct{}
 )
 
-func updateBlockHeightExp() {
-	blockHeightExp = time.Now().Unix() + 15
+func sync() {
+	exp = time.Now().Unix() + 15
 }
 
 func blockHeightDaemon() {
@@ -47,7 +47,7 @@ func blockHeightDaemon() {
 			defer func() {
 				if err := recover(); err != nil {
 					log.Println("blockHeightDaemon:", err)
-					updateBlockHeightExp()
+					sync()
 				}
 			}()
 
@@ -70,13 +70,13 @@ func blockHeightDaemon() {
 
 			for {
 				select {
-				case <-blockHeightExpC:
+				case <-expC:
 					panic("header timeout")
 				case err := <-sub.Err():
 					panic(err)
 				case header := <-headers:
 					BlockHeight = header.Number.Uint64()
-					updateBlockHeightExp()
+					sync()
 				}
 			}
 		}()
@@ -85,29 +85,22 @@ func blockHeightDaemon() {
 	}
 }
 
-func blockHeightExpDaemon() {
+func blockHeightWatchdog() {
 	for {
 		func() {
 			defer func() {
 				if err := recover(); err != nil {
-					log.Println("blockHeightExpDaemon:", err)
+					log.Println("blockHeightWatchdog:", err)
 				}
 			}()
 
 			for range time.Tick(time.Second) {
-				if time.Now().Unix() > blockHeightExp {
-					blockHeightExpC <- struct{}{}
+				if time.Now().Unix() > exp {
+					expC <- struct{}{}
 				}
 			}
 		}()
 	}
-}
-
-func initBlockHeight() {
-	updateBlockHeightExp()
-	blockHeightExpC = make(chan struct{})
-	go blockHeightDaemon()
-	go blockHeightExpDaemon()
 }
 
 // --- --- ---
@@ -163,7 +156,10 @@ func (p *Pair) Daemon() {
 
 // --- --- ---
 func main() {
-	initBlockHeight()
+	sync()
+	expC = make(chan struct{})
+	go blockHeightDaemon()
+	go blockHeightWatchdog()
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
