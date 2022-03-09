@@ -36,6 +36,10 @@ var (
 	blockHeightExpC chan struct{}
 )
 
+func updateBlockHeightExp() {
+	blockHeightExp = time.Now().Unix() + 15
+}
+
 func blockHeightDaemon() {
 	runtime.LockOSThread()
 	for {
@@ -79,10 +83,6 @@ func blockHeightDaemon() {
 		log.Println("blockHeightDaemon:", "cooldown")
 		time.Sleep(3 * time.Second)
 	}
-}
-
-func updateBlockHeightExp() {
-	blockHeightExp = time.Now().Unix() + 15
 }
 
 func blockHeightExpDaemon() {
