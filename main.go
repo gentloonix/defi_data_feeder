@@ -94,11 +94,9 @@ func blockHeightExpDaemon() {
 				}
 			}()
 
-			for {
+			for range time.Tick(time.Second) {
 				if time.Now().Unix() > blockHeightExp {
 					blockHeightExpC <- struct{}{}
-				} else {
-					time.Sleep(300 * time.Millisecond)
 				}
 			}
 		}()
