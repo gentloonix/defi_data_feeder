@@ -108,10 +108,10 @@ type Pair struct {
 	//lint:ignore U1000 noCopy
 	noCopy noCopy
 
-	ID     int
-	Pair   common.Address
-	Token0 common.Address
-	Token1 common.Address
+	ID     int            `json:"id"`
+	Pair   common.Address `json:"pair"`
+	Token0 common.Address `json:"token0"`
+	Token1 common.Address `json:"token1"`
 	C      chan struct{}
 }
 
