@@ -120,7 +120,7 @@ func (p *Pair) Daemon() {
 		func() {
 			defer func() {
 				if err := recover(); err != nil {
-					log.Println("Pair Daemon:", p.ID, err)
+					log.Println("pair daemon:", p.ID, err)
 				}
 			}()
 
@@ -142,6 +142,7 @@ func (p *Pair) Daemon() {
 			for {
 				<-c
 				if blockHeight == BlockHeight {
+					log.Println("pair daemon:", p.ID, "fast forward")
 					continue
 				}
 				blockHeight = BlockHeight
