@@ -46,7 +46,7 @@ func blockHeightDaemon() {
 		func() {
 			defer func() {
 				if err := recover(); err != nil {
-					log.Println("blockHeightDaemon panic:", err)
+					log.Println("blockHeightDaemon:", err)
 					sync()
 				}
 			}()
@@ -90,7 +90,7 @@ func blockHeightWatchdog() {
 		func() {
 			defer func() {
 				if err := recover(); err != nil {
-					log.Println("blockHeightWatchdog panic:", err)
+					log.Println("blockHeightWatchdog:", err)
 				}
 			}()
 
@@ -120,7 +120,7 @@ func (p *Pair) Daemon() {
 		func() {
 			defer func() {
 				if err := recover(); err != nil {
-					log.Println("Daemon", p.ID, "panic:", err)
+					log.Println("Pair Daemon:", p.ID, err)
 				}
 			}()
 
