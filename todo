@@ -1,2 +1,3 @@
 Prune Low Liquidity Pairs
 Prune One Pair Only Tokens
+Custom Log (e.g. Log(weight) << 8)
