@@ -1,3 +1,4 @@
 Prune Low Liquidity Pairs
 Prune One Pair Only Tokens
-Custom Log (e.g. Log(weight) << 8)
+Custom Integer Log (e.g. Log(weight) << 8)
+DMA Queue & DMA GoRoutine
