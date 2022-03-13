@@ -136,10 +136,15 @@ func (p *Pair) Daemon() {
 			}
 
 			c := p.C
+			blockHeight := uint64(0)
 			reserve0 := big.NewInt(0)
 			reserve1 := big.NewInt(0)
 			for {
 				<-c
+				if blockHeight == BlockHeight {
+					continue
+				}
+				blockHeight = BlockHeight
 				reserves, err := instance.GetReserves(nil)
 				if err != nil {
 					panic(err)
